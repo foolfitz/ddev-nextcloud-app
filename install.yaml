@@ -1,0 +1,71 @@
+name: ddev-nextcloud-app
+
+pre_install_actions:
+  - |
+    #ddev-description: Validate the Nextcloud app project layout
+    if [ "${DDEV_PROJECT_TYPE}" != "php" ]; then
+      echo "ddev-nextcloud-app requires project type 'php'."
+      echo "Current project type: '${DDEV_PROJECT_TYPE}'."
+      echo "Run: ddev config --project-type=php --docroot=nextcloud"
+      echo "Then: ddev config --webserver-type=apache-fpm"
+      exit 1
+    fi
+
+    if [ "${DDEV_DOCROOT}" != "nextcloud" ]; then
+      echo "ddev-nextcloud-app requires docroot 'nextcloud' (current: '${DDEV_DOCROOT}')."
+      echo "Run: ddev config --docroot=nextcloud"
+      exit 1
+    fi
+
+    if [ ! -f "${DDEV_APPROOT}/appinfo/info.xml" ]; then
+      echo "appinfo/info.xml was not found in ${DDEV_APPROOT}."
+      echo "Install this add-on from the root of a Nextcloud app repository."
+      exit 1
+    fi
+
+project_files:
+  - commands/web/cron
+  - commands/web/nc-app-exec
+  - commands/web/nc-link
+  - commands/web/nc-setup
+  - commands/web/occ
+  - config.nextcloud-app.yaml
+  - nextcloud-app/ddev.config.php
+  - nextcloud-app/lib.sh
+
+ddev_version_constraint: '>= v1.24.10'
+
+post_install_actions:
+  - |
+    #ddev-description: Ignore the generated Nextcloud core worktree
+    gitignore="${DDEV_APPROOT}/.gitignore"
+    marker="# BEGIN ddev-nextcloud-app"
+    if [ ! -f "${gitignore}" ] || ! grep -Fq "${marker}" "${gitignore}"; then
+      {
+        printf '\n%s\n' "${marker}"
+        printf '/nextcloud/\n'
+        printf '# END ddev-nextcloud-app\n'
+      } >> "${gitignore}"
+    fi
+
+removal_actions:
+  - |
+    #ddev-description: Remove the generated Git ignore block
+    gitignore="${DDEV_APPROOT}/.gitignore"
+    if [ -f "${gitignore}" ]; then
+      if grep -Fqx "# BEGIN ddev-nextcloud-app" "${gitignore}" \
+        && grep -Fqx "# END ddev-nextcloud-app" "${gitignore}"; then
+        temporary="${gitignore}.ddev-nextcloud-app.tmp"
+        awk '
+          $0 == "# BEGIN ddev-nextcloud-app" { skipping = 1; next }
+          $0 == "# END ddev-nextcloud-app" { skipping = 0; next }
+          !skipping { print }
+        ' "${gitignore}" > "${temporary}"
+        mv "${temporary}" "${gitignore}"
+      elif grep -Fq "ddev-nextcloud-app" "${gitignore}"; then
+        echo "略過已被修改的 ddev-nextcloud-app Git ignore 區塊。"
+      fi
+    fi
+    if [ -d "${DDEV_APPROOT}/nextcloud" ]; then
+      echo "保留 ${DDEV_APPROOT}/nextcloud；確認不再需要後可由使用者自行移除。"
+    fi

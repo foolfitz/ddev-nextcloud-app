@@ -1,0 +1,14 @@
+{
+  "name": "ddev/ddev-nextcloud-app-test",
+  "description": "Integration fixture for ddev-nextcloud-app",
+  "type": "nextcloud-app",
+  "license": "AGPL-3.0-or-later",
+  "autoload": {
+    "psr-4": {
+      "OCA\\DdevTestApp\\": "lib/"
+    }
+  },
+  "require": {
+    "php": "^8.2"
+  }
+}

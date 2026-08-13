@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  SPDX-FileCopyrightText: 2026 ddev-nextcloud-app contributors
+  SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>ddev_test_app</id>
+	<name>DDEV Test App</name>
+	<summary>Integration fixture for ddev-nextcloud-app</summary>
+	<description>Integration fixture for ddev-nextcloud-app.</description>
+	<version>1.0.0</version>
+	<licence>AGPL-3.0-or-later</licence>
+	<author>DDEV Nextcloud App contributors</author>
+	<namespace>DdevTestApp</namespace>
+	<category>tools</category>
+	<bugs>https://github.com/ddev/ddev-nextcloud-app/issues</bugs>
+	<dependencies>
+		<nextcloud min-version="34" max-version="34"/>
+	</dependencies>
+</info>
