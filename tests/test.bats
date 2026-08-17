@@ -46,10 +46,10 @@ teardown_file() {
 
   run ddev utility configyaml --full-yaml
   [ "${status}" -eq 0 ]
-  [[ "${output}" == *"NEXTCLOUD_VERSION=stable34"* ]]
+  [[ "${output}" == *"NEXTCLOUD_VERSION=v33.0.8"* ]]
 }
 
-@test "Nextcloud 34 is installed and the fixture app is enabled" {
+@test "Nextcloud 33.0.8 is installed and the fixture app is enabled" {
   cd "${TEST_ROOT}"
 
   run ddev nc-setup
@@ -58,13 +58,13 @@ teardown_file() {
 
   run ddev occ status
   [ "${status}" -eq 0 ]
-  [[ "${output}" == *"version: 34."* ]]
+  [[ "${output}" == *"versionstring: 33.0.8"* ]]
 
   run ddev occ app:list --enabled
   [ "${status}" -eq 0 ]
   [[ "${output}" == *"ddev_test_app"* ]]
 
-  run ddev nc-setup stable34
+  run ddev nc-setup v33.0.8
   [ "${status}" -eq 0 ]
   [[ "${output}" == *"正在套用 Nextcloud 資料庫升級"* ]]
 }
@@ -87,7 +87,7 @@ teardown_file() {
   run curl -fsS "${primary_url}/status.php"
   [ "${status}" -eq 0 ]
   [[ "${output}" == *'"installed":true'* ]]
-  [[ "${output}" == *'"version":"34.'* ]]
+  [[ "${output}" == *'"versionstring":"33.0.8"'* ]]
 }
 
 @test "removing the add-on cleans managed files but keeps the core worktree" {

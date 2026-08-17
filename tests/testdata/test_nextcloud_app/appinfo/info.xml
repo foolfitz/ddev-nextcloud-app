@@ -16,6 +16,6 @@
 	<category>tools</category>
 	<bugs>https://github.com/ddev/ddev-nextcloud-app/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="34" max-version="34"/>
+		<nextcloud min-version="33" max-version="33"/>
 	</dependencies>
 </info>
