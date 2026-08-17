@@ -7,7 +7,7 @@
 
 ## 提供的功能
 
-- 預設取得 Nextcloud `stable34` 與 `3rdparty` submodule。
+- 預設取得 Nextcloud `v33.0.8` 與 `3rdparty` submodule。
 - 從 `appinfo/info.xml` 自動讀取 app ID。
 - 將 app 根目錄的檔案連結到 `nextcloud/apps-extra/<app-id>`。
 - 自動安裝 Nextcloud、設定 MariaDB、開發模式與 DDEV Mailpit。
@@ -72,19 +72,19 @@ ddev occ status
 ddev occ app:list --enabled
 ```
 
-## 使用本機 Nextcloud 34 原始碼
+## 使用本機 Nextcloud 33.0.8 原始碼
 
-若主機已有 `/home/jiajun/OSSII/NC_server/nc34`，可在 `ddev start` 前以
+若主機已有 `/home/jiajun/OSSII/NC_server/nc33`，可在 `ddev start` 前以
 本機 clone 建立工作區，省去重新下載 core Git objects：
 
 ```bash
-git clone --local /home/jiajun/OSSII/NC_server/nc34 nextcloud
+git clone --local --branch v33.0.8 /home/jiajun/OSSII/NC_server/nc33 nextcloud
 ddev start
 ddev nc-setup
 ```
 
 `nc-setup` 會補齊尚未初始化的 `3rdparty` submodule、建立開發設定並安裝
-Nextcloud。它不會修改原始的 `nc34` worktree。
+Nextcloud。它不會修改原始的 `nc33` worktree。
 
 ## 日常開發
 
@@ -127,7 +127,7 @@ ddev xdebug off
 第一次建立環境時可直接指定 branch 或 tag：
 
 ```bash
-ddev nc-setup stable33
+ddev nc-setup v33.0.8
 ddev nc-setup v34.0.2
 ```
 
@@ -139,7 +139,7 @@ worktree，並在切換後執行 `occ upgrade`。
 
 ```bash
 ddev snapshot --name=before-nextcloud-upgrade
-ddev nc-setup stable34
+ddev nc-setup v34.0.2
 ```
 
 ## 自訂
@@ -147,14 +147,14 @@ ddev nc-setup stable34
 預設值：
 
 - Core repository：`https://github.com/nextcloud/server.git`
-- Core ref：`stable34`
+- Core ref：`v33.0.8`
 - 管理員帳號：`admin`
 
 可在 `.ddev/config.local.yaml` 覆寫 web environment：
 
 ```yaml
 web_environment:
-  - NEXTCLOUD_VERSION=stable34
+  - NEXTCLOUD_VERSION=v33.0.8
   - NEXTCLOUD_CORE_REPOSITORY=https://github.com/nextcloud/server.git
   - NEXTCLOUD_ADMIN_USER=admin
 ```
@@ -171,7 +171,7 @@ web_environment:
 bash -n commands/web/* nextcloud-app/lib.sh
 ```
 
-完整測試會建立暫時 DDEV 專案、clone Nextcloud 34、安裝 fixture app，
+完整測試會建立暫時 DDEV 專案、clone Nextcloud 33.0.8、安裝 fixture app，
 最後驗證 HTTP、`occ` 與 app 啟用狀態：
 
 ```bash
