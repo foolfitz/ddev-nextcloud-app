@@ -3,7 +3,7 @@
 #ddev-generated
 ## Description: Create or update the Nextcloud core development environment
 ## Usage: nc-setup [core-ref]
-## Example: ddev nc-setup or ddev nc-setup stable34
+## Example: ddev nc-setup or ddev nc-setup v33.0.8
 ## ExecRaw: true
 
 set -eu -o pipefail
